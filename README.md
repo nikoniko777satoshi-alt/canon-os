@@ -1,5 +1,7 @@
 # canon-os
 
+**English** | [日本語](README.ja.md)
+
 **An operating system for coding agents. Reproduce a top-tier model's *behavior* with structure — not spend.**
 
 *by Sumika*
