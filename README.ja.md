@@ -1,5 +1,7 @@
 # canon-os
 
+![canon-os](assets/hero.png)
+
 [English](README.md) | **日本語**
 
 **コーディングエージェントのためのオペレーティングシステム。top-tier モデルの*振る舞い*を、支出ではなく構造で再現する。**
