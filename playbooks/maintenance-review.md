@@ -1,6 +1,6 @@
 # Maintenance Review (monthly / quarterly)
 
-Last reviewed: 2026-07-06 / Index: [INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-07 / Index: [INDEX.md](../INDEX.md)
 
 A periodic review that keeps the OS and its governance files aligned with reality. The **rules** for
 update / deprecate / delete / anti-bloat are authoritative in
@@ -19,17 +19,18 @@ update / deprecate / delete / anti-bloat are authoritative in
 6. If you run an automated knowledge-vault lint job on your scheduler/runtime (cron, launchd, CI, or an
    agent runtime), reconcile its latest report against the compiled layer's git log — a missing report is
    itself worth logging as a scheduling gap.
-7. Audit your raw-layer capture area's modification times for unintended rewrites.
-8. If a cloud-sync service touches your local canon files, confirm it isn't silently altering or
+7. A job being alive ≠ its report existing ≠ its artifacts being produced — check all three separately.
+8. Audit your raw-layer capture area's modification times for unintended rewrites.
+9. If a cloud-sync service touches your local canon files, confirm it isn't silently altering or
    duplicating them.
 
 ### Quarterly, deep (in addition to monthly)
 
-9. Fan [project-audit.md](project-audit.md) out across every active repository via a cheap-tier sub-agent
-   ([delegation-policy.md](../kernel/delegation-policy.md)).
-10. Re-check knowledge-layer files whose "last reviewed" is over 90 days old; reconfirm or deprecate.
-11. Execute the deletion of DEPRECATED documents (after approval).
-12. Propose a review of the constitution and delegation policy themselves — do they still match reality?
+10. Fan [project-audit.md](project-audit.md) out across every active repository via a cheap-tier sub-agent
+    ([delegation-policy.md](../kernel/delegation-policy.md)).
+11. Re-check knowledge-layer files whose "last reviewed" is over 90 days old; reconfirm or deprecate.
+12. Execute the deletion of DEPRECATED documents (after approval).
+13. Propose a review of the constitution and delegation policy themselves — do they still match reality?
 
 ## Kickoff prompt (copy-paste)
 

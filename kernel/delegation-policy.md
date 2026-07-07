@@ -1,6 +1,6 @@
 # Delegation Policy (model / agent routing)
 
-Last reviewed: 2026-07-06 / Index: [INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-07 / Index: [INDEX.md](../INDEX.md)
 
 Principle: route each task to the cheapest capable tier and run it as a sub-agent. Keep the always-loaded
 context thin; pull knowledge through the index. Model names are deliberately abstract here — map the tiers to
@@ -28,5 +28,8 @@ autonomy) is not transferred by style — so back the most important judgments w
    Prepend [subagent-preamble.md](../behavior/subagent-preamble.md) to every worker prompt (styles don't reach sub-agents).
 3. Don't re-read a directory to answer a question a source map or summary already answers.
 4. Design recurring / routine operations (report generation, audit fan-out) on a cheaper tier from the start.
+5. One writer per file at a time. After delegating, wait — judge worker liveness by transcript activity, not
+   by output files appearing. Don't touch a delegated target yourself; after an owner edit lands, re-read
+   before editing. See [session-operations.md](../playbooks/session-operations.md).
 
 Related: [constitution.md](constitution.md) Article 7.

@@ -1,6 +1,6 @@
 # canon-os — INDEX
 
-Last reviewed: 2026-07-06
+Last reviewed: 2026-07-07
 
 canon-os is a thin kernel plus indexed playbooks, so any agent — any model, any tool — works from the same
 norms, behavior, and templates. Always-loaded: `kernel/` only. Everything else is read on demand, through
@@ -44,6 +44,7 @@ ruling (Constitution Article 8).
 | [playbooks/kickoff.md](playbooks/kickoff.md) | Starting a new project so a mid-tier model reproduces top-tier behavior (copy-paste kickoff prompt) |
 | [playbooks/project-audit.md](playbooks/project-audit.md) | A point-in-time audit of a single repository (copy-paste audit prompt) |
 | [playbooks/maintenance-review.md](playbooks/maintenance-review.md) | Monthly-light / quarterly-deep self-maintenance |
+| [playbooks/session-operations.md](playbooks/session-operations.md) | Delegation, context economy, and owner-collaboration rules for running long agent sessions |
 
 ## checklists
 

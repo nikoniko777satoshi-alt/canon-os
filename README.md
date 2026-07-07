@@ -27,6 +27,14 @@ Quality is reproduced by **structure**, not raw intelligence:
 A model's raw capability isn't transferred by a prompt. So the [delegation policy](kernel/delegation-policy.md)
 still routes the hardest judgment to the top tier — while everything else runs disciplined and cheap.
 
+## Context economy
+
+Treat context like a budget, not a given. Give every worker a strict return format and a line cap so its
+report — not its raw transcript — is what comes back. Read through the index first; pull a whole file only
+when a decision actually needs it, and never re-read a worker's transcript directly. Write decisions to a
+file every turn — context is volatile, files survive compaction. Full rule set:
+[playbooks/session-operations.md](playbooks/session-operations.md).
+
 ## Quick start
 
 ```sh
@@ -44,7 +52,8 @@ Works with **Claude Code** (via output styles) and **AGENTS.md-style tools** (Co
   [delegation-policy](kernel/delegation-policy.md), [security-floor](kernel/security-floor.md),
   [vault-policy](kernel/vault-policy.md)
 - `behavior/` — the [operating style](behavior/operating-style.md) + [sub-agent preamble](behavior/subagent-preamble.md)
-- `playbooks/` — unknown-unknown protocol, project launch, kickoff, project audit, maintenance review
+- `playbooks/` — unknown-unknown protocol, project launch, kickoff, project audit, maintenance review,
+  session operations
 - `checklists/` — the [value gate](checklists/value-gate.md)
 - `templates/` — project agent file, implementation notes, progress, handoff, charter, decision, sub-agent preamble
 - `maintenance/` — deprecation rules + starters for the review log, decisions, and backlog
