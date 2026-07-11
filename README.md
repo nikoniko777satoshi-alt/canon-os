@@ -26,7 +26,9 @@ Quality is reproduced by **structure**, not raw intelligence:
 3. **Behavior** — an [operating style](behavior/operating-style.md) that injects the "feel" of a top-tier model
    (conclusion-first, act, verify, re-land) into any model via your tool's system-prompt mechanism.
 4. **Self-improvement** — monthly/quarterly maintenance reviews, a decisions log, deprecation rules, and an
-   unknowns ledger, so the system stays true to reality instead of rotting.
+   unknowns ledger, so the system stays true to reality instead of rotting. A portable
+   [self-maintenance loop](playbooks/self-maintenance-loop.md) (a no-LLM lint + the review) wires to any
+   scheduler — or runs by hand, so it never depends on a particular runtime.
 
 A model's raw capability isn't transferred by a prompt. So the [delegation policy](kernel/delegation-policy.md)
 still routes the hardest judgment to the top tier — while everything else runs disciplined and cheap.
