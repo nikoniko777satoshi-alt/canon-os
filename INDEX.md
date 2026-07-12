@@ -44,6 +44,7 @@ ruling (Constitution Article 8).
 | [playbooks/kickoff.md](playbooks/kickoff.md) | Starting a new project so a mid-tier model reproduces top-tier behavior (copy-paste kickoff prompt) |
 | [playbooks/project-audit.md](playbooks/project-audit.md) | A point-in-time audit of a single repository (copy-paste audit prompt) |
 | [playbooks/maintenance-review.md](playbooks/maintenance-review.md) | Monthly-light / quarterly-deep self-maintenance |
+| [playbooks/self-maintenance-loop.md](playbooks/self-maintenance-loop.md) | Wiring the weekly lint + monthly review to any scheduler — or none (manual works) |
 | [playbooks/session-operations.md](playbooks/session-operations.md) | Delegation, context economy, and owner-collaboration rules for running long agent sessions |
 
 ## checklists
@@ -67,6 +68,7 @@ ruling (Constitution Article 8).
 
 | File | Contents |
 |---|---|
+| [maintenance/vault-lint.py](maintenance/vault-lint.py) | Portable read-only lint (broken links / stale markers); no LLM, stdlib + git only |
 | [maintenance/deprecation-rules.md](maintenance/deprecation-rules.md) | Update / deprecate / delete / anti-bloat rules |
 | [maintenance/review-log.md](maintenance/review-log.md) | Maintenance-review record (starter, with one illustrative entry) |
 | [maintenance/backlog.md](maintenance/backlog.md) | Single ledger for open tasks (starter, with one illustrative example per section) |

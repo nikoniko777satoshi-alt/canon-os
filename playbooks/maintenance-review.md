@@ -18,7 +18,8 @@ update / deprecate / delete / anti-bloat are authoritative in
 5. Present every change as a proposal; execute only after user approval.
 6. If you run an automated knowledge-vault lint job on your scheduler/runtime (cron, launchd, CI, or an
    agent runtime), reconcile its latest report against the compiled layer's git log — a missing report is
-   itself worth logging as a scheduling gap.
+   itself worth logging as a scheduling gap. To wire this lint (and this review) to a scheduler — or run
+   them by hand — see [self-maintenance-loop.md](self-maintenance-loop.md).
 7. A job being alive ≠ its report existing ≠ its artifacts being produced — check all three separately.
 8. Audit your raw-layer capture area's modification times for unintended rewrites.
 9. If a cloud-sync service touches your local canon files, confirm it isn't silently altering or

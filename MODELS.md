@@ -11,6 +11,17 @@ so the norms don't rot when models change. Map the tiers to whatever models you 
 | **mid** | bounded implementation, reviews, structured research | high |
 | **cheap** | build/lint fixes, enumeration, summarization, recon | default |
 
+## Effort (optional annotation)
+
+Some hosts expose a per-call **reasoning-effort** control (e.g. low / medium / high / xhigh / max). Where the
+routing table or a pattern needs it, write `tier@effort` — for example `mid@max` (a mid-tier model at maximum
+effort) or `top@high`. Tier is primary; effort is a secondary dial. On a provider with no effort control, read
+`tier@effort` as just the tier and ignore the suffix — the norm still parses.
+
+Economic principle: judgment-dense but short-output work (review, adjudication) suits a **high tier at moderate
+effort**; long-output generation suits a **mid tier at maximum effort**. Spend effort where the tokens are few
+and the stakes are high, not where the output is long.
+
 ## Example mapping (edit for your setup)
 
 This is only an example. Substitute your provider's line-up.

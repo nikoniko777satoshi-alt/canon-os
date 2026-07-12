@@ -49,6 +49,12 @@ wires itself in. Good when you'd rather have the agent do it than run a shell sc
 
 Edit [MODELS.md](MODELS.md) to map `top` / `mid` / `cheap` to the models you actually use.
 
+## Optional: wire the self-maintenance loop
+
+To keep the tree honest over time, run the weekly lint (`maintenance/vault-lint.py`) and the monthly review.
+Neither needs a scheduler — a prompt you run by hand is enough. To automate them (cron, launchd, systemd, CI, or
+an agent runtime), see [playbooks/self-maintenance-loop.md](playbooks/self-maintenance-loop.md).
+
 ## Verify
 
 Open a new session and ask the agent to summarize `kernel/constitution.md` back. If it leads with the
