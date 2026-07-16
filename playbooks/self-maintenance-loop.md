@@ -1,6 +1,6 @@
 # Self-maintenance loop
 
-Last reviewed: 2026-07-11 / Index: [../INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-17 / Index: [../INDEX.md](../INDEX.md)
 
 Keep the knowledge tree honest over time with two light jobs. Neither needs any particular scheduler — a plain
 prompt you run by hand is enough, so this never breaks canon-os's one-command install. Wire a scheduler only if
@@ -44,6 +44,15 @@ The jobs are just "run a script" and "run a prompt," so any runner works. Adapt 
 For the monthly review under a headless runner, invoke your agent in one-shot mode with a **restricted, read-only
 tool policy** (allow file reads + the report-output path; deny writes to the tree) so an unattended run can't edit
 the tree or stall on a permission prompt. If it can't be made non-interactive, fall back to the manual kickoff.
+
+- Interactive-auth MCP servers and other external connectors become unreachable under a headless runner, and the
+  agent can stall indefinitely waiting on the connection (observed in practice: normal progress partway through,
+  then a permanent wedge at 0% CPU). Disable them at headless startup (for example, in Claude Code:
+  `--strict-mcp-config`).
+- A watchdog's SIGTERM can be ignored, so escalate to SIGKILL after a grace period rather than relying on a
+  single signal.
+- If it still doesn't stabilize, fall back to notify-only: the scheduler only sends a notification, and the
+  actual review runs in an interactive session.
 
 ## Notes
 
