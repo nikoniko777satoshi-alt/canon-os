@@ -1,6 +1,6 @@
 # canon-os — INDEX
 
-Last reviewed: 2026-07-07
+Last reviewed: 2026-07-17
 
 canon-os is a thin kernel plus indexed playbooks, so any agent — any model, any tool — works from the same
 norms, behavior, and templates. Always-loaded: `kernel/` only. Everything else is read on demand, through
