@@ -41,7 +41,7 @@ tier に振り分け続ける——それ以外はすべて、規律正しく安
 ## クイックスタート
 
 ```sh
-git clone <this-repo> canon-os && cd canon-os && ./install.sh
+git clone https://github.com/nikoniko777satoshi-alt/canon-os.git canon-os && cd canon-os && ./install.sh
 ```
 
 または [INSTALL_PROMPT.md](INSTALL_PROMPT.md) をコーディングエージェントに貼り付け、自動的に組み込ませる。

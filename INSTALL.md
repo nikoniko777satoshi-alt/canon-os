@@ -5,7 +5,7 @@ Three ways in. The first two are one-shot; the third is manual.
 ## A. One command
 
 ```sh
-git clone <this-repo> canon-os && cd canon-os && ./install.sh
+git clone https://github.com/nikoniko777satoshi-alt/canon-os.git canon-os && cd canon-os && ./install.sh
 ```
 
 `install.sh` places the knowledge tree at `~/.canon-os/` and **prints** the host-config changes (safe to run
