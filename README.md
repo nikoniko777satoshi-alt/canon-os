@@ -44,7 +44,7 @@ file every turn — context is volatile, files survive compaction. Full rule set
 ## Quick start
 
 ```sh
-git clone <this-repo> canon-os && cd canon-os && ./install.sh
+git clone https://github.com/nikoniko777satoshi-alt/canon-os.git canon-os && cd canon-os && ./install.sh
 ```
 
 or paste [INSTALL_PROMPT.md](INSTALL_PROMPT.md) into a coding agent and let it wire itself in.

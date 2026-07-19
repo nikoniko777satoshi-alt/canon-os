@@ -1,6 +1,6 @@
 # Session Operations (delegation, context economy, working with the owner)
 
-Last reviewed: 2026-07-07 / Index: [INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-17 / Index: [INDEX.md](../INDEX.md)
 
 Field-tested rules for running long agent sessions. Distilled from real operating experience; examples are
 anonymized.
@@ -47,6 +47,8 @@ anonymized.
 6. **Make fallback wake-timers long.** A completion notification is the primary signal; a timer is only
    insurance. A short timer wastes turns on "it's already done" responses (observed in practice,
    repeatedly).
+7. **Token counts in task-completion notifications can significantly undercount true cost** (cache traffic is
+   often excluded). Judge spend from the transcript's full usage records, not the headline number.
 
 ## 3. Working with the owner
 

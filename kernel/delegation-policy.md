@@ -1,6 +1,6 @@
 # Delegation Policy (model / agent routing)
 
-Last reviewed: 2026-07-07 / Index: [INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-17 / Index: [INDEX.md](../INDEX.md)
 
 Principle: route each task to the cheapest capable tier and run it as a sub-agent. Keep the always-loaded
 context thin; pull knowledge through the index. Model names are deliberately abstract here — map the tiers to
@@ -60,5 +60,8 @@ one) is often better done in a single top-tier session than fanned out.
    return the best attempt. Judge pass/fail against explicit criteria and stop after two rounds with no progress.
 7. When a delegation harness lets you pick the sub-agent's model, set it **explicitly** per stage — don't rely on
    inheriting the session default, or a routine fan-out may silently run every sub-agent on your most expensive tier.
+8. Deleting temporary artifacts must never stall deliverable production. Scratch files and screenshots aren't
+   required steps — don't delete them mid-workflow where a confirmation prompt could stall an unattended run;
+   propose cleanup once, after the deliverable is reported, and leaving them in place is acceptable.
 
 Related: [constitution.md](constitution.md) Article 7.
