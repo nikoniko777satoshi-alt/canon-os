@@ -59,10 +59,11 @@ Works with **Claude Code** (via output styles) and **AGENTS.md-style tools** (Co
   [vault-policy](kernel/vault-policy.md)
 - `behavior/` — the [operating style](behavior/operating-style.md) + [sub-agent preamble](behavior/subagent-preamble.md)
 - `playbooks/` — unknown-unknown protocol, project launch, kickoff, project audit, maintenance review,
-  session operations
+  self-maintenance loop, session operations
 - `checklists/` — the [value gate](checklists/value-gate.md)
-- `templates/` — project agent file, implementation notes, progress, handoff, charter, decision, sub-agent preamble
-- `maintenance/` — deprecation rules + starters for the review log, decisions, and backlog
+- `templates/` — project agent file, implementation notes, progress, handoff, charter, decision
+- `maintenance/` — [vault lint](maintenance/vault-lint.py), deprecation rules + starters for the review log,
+  decisions, and backlog
 - `INDEX.md` — the front door; read it first
 
 ## Attribution

@@ -1,6 +1,6 @@
 # Self-maintenance loop
 
-Last reviewed: 2026-07-17 / Index: [../INDEX.md](../INDEX.md)
+Last reviewed: 2026-07-17 / Index: [INDEX.md](../INDEX.md)
 
 Keep the knowledge tree honest over time with two light jobs. Neither needs any particular scheduler — a plain
 prompt you run by hand is enough, so this never breaks canon-os's one-command install. Wire a scheduler only if

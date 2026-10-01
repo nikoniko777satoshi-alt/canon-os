@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Vault lint (no broken relative links)
+        run: |
+          out="$(python3 maintenance/vault-lint.py --root . --out-dir "$RUNNER_TEMP/lint")"
+          echo "$out"
+          cat "$RUNNER_TEMP"/lint/vault-lint-*.md
+          echo "$out" | grep -q 'broken_links=0 '
+
+      - name: Kernel files stay under 100 lines (deprecation-rules.md anti-bloat)
+        run: |
+          fail=0
+          for f in kernel/*.md; do
+            n=$(wc -l < "$f")
+            echo "$f: $n lines"
+            [ "$n" -le 100 ] || { echo "::error file=$f::$n lines (max 100)"; fail=1; }
+          done
+          exit $fail
+
+      - name: Shellcheck install.sh
+        run: shellcheck install.sh
+
+      - name: Installer smoke test (sandboxed HOME)
+        run: |
+          export HOME="$RUNNER_TEMP/home"
+          proj="$RUNNER_TEMP/project"
+          mkdir -p "$HOME" "$proj"
+          cd "$proj"
+          "$GITHUB_WORKSPACE/install.sh" --help
+          "$GITHUB_WORKSPACE/install.sh"
+          "$GITHUB_WORKSPACE/install.sh" --write
+          test -f "$HOME/.canon-os/INDEX.md"
+          test -f "$HOME/.claude/output-styles/operating-style.md"
+          grep -q '^## canon-os' "$HOME/.claude/CLAUDE.md"
+          grep -q 'Agent entry point' "$proj/AGENTS.md"
