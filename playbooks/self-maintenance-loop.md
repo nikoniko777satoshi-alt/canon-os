@@ -1,6 +1,6 @@
 # Self-maintenance loop
 
-Last reviewed: 2026-07-17 / Index: [INDEX.md](../INDEX.md)
+Last reviewed: 2026-10-01 / Index: [INDEX.md](../INDEX.md)
 
 Keep the knowledge tree honest over time with two light jobs. Neither needs any particular scheduler — a plain
 prompt you run by hand is enough, so this never breaks canon-os's one-command install. Wire a scheduler only if
@@ -18,7 +18,8 @@ you want the jobs to fire on their own.
 
    Flags: `--root` (tree to scan), `--vault-dir` (optional raw store to compare), `--out-dir`, `--stale-days`
    (default 90), `--marker` (regex whose group 1 is an ISO date; default `Last reviewed:\s*(\d{4}-\d{2}-\d{2})`),
-   `--exclude` (path prefixes exempt from the marker check; default `templates/ decisions/`).
+   `--exclude` (path prefixes exempt from the marker check; default `templates/ decisions/`), `--fail-on-broken`
+   (exit 1 on any broken link — for CI; default always exits 0). Links inside code spans/blocks are ignored.
 
 2. **Monthly review** — an LLM read-only pass over the tree using the kickoff prompt in
    [maintenance-review.md](maintenance-review.md). It proposes changes (for your approval) and writes a dated

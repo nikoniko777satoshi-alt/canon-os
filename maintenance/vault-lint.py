@@ -23,6 +23,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 MD_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+FENCE_RE = re.compile(r"^ {0,3}(```|~~~).*?^ {0,3}\1[^\n]*$", re.MULTILINE | re.DOTALL)
+INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 FILENAME_DATE_RE = re.compile(r"(20\d{2}-\d{2}-\d{2})")
 
 
@@ -42,12 +44,25 @@ class Config:
         return self.now - dt.timedelta(days=7)
 
 
+def strip_code(text: str) -> str:
+    """Drop fenced blocks and inline code spans: link syntax inside them is an example, not a link."""
+    return INLINE_CODE_RE.sub("", FENCE_RE.sub("", text))
+
+
+def link_target(raw: str) -> str:
+    """Normalize a link destination: drop an optional title and angle brackets."""
+    target = raw.strip()
+    if target.startswith("<") and ">" in target:
+        return target[1:target.index(">")]
+    return target.split(" ", 1)[0]
+
+
 def check_links(cfg: Config) -> list[str]:
     broken: list[str] = []
     for md in sorted(cfg.root.rglob("*.md")):
-        text = md.read_text(encoding="utf-8", errors="ignore")
+        text = strip_code(md.read_text(encoding="utf-8", errors="ignore"))
         for m in MD_LINK_RE.finditer(text):
-            target = m.group(1).strip()
+            target = link_target(m.group(1))
             if not target or target.startswith(("#", "~", "/")) or "://" in target or target.startswith("mailto:"):
                 continue
             path_part = target.split("#", 1)[0]
@@ -105,8 +120,15 @@ def recent_vault_changes(cfg: Config) -> tuple[int, list[str]]:
 
 
 def git_commit_count(cfg: Config) -> tuple[str, str]:
-    if not (cfg.root / ".git").exists():
-        return "not-a-git-repo", f"`{cfg.root}` is not a git repository; commit count unavailable."
+    try:
+        inside = subprocess.run(
+            ["git", "-C", str(cfg.root), "rev-parse", "--is-inside-work-tree"],
+            capture_output=True, text=True, timeout=20,
+        ).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        inside = ""
+    if inside != "true":
+        return "not-a-git-repo", f"`{cfg.root}` is not inside a git work tree; commit count unavailable."
     try:
         out = subprocess.check_output(
             ["git", "-C", str(cfg.root), "rev-list", "--count", "--since=7 days ago", "HEAD"],
@@ -133,6 +155,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--exclude", nargs="*", default=["templates/", "decisions/"],
                    help="Path prefixes (relative to root) exempt from marker checks. "
                         "Default: templates/ decisions/.")
+    p.add_argument("--fail-on-broken", action="store_true",
+                   help="Exit 1 when any broken relative link is found (for CI). Default: always exit 0.")
     return p.parse_args()
 
 
@@ -194,6 +218,10 @@ def main() -> int:
         f"broken_links={len(broken)} stale={len(stale)} missing_marker={len(missing)} "
         f"commits_7d={commit_count} vault_updated_7d={vault_updated}"
     )
+    if args.fail_on_broken and broken:
+        for line in broken:
+            print(f"broken link: {line[2:]}")
+        return 1
     return 0
 
 
