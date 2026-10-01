@@ -56,10 +56,10 @@ git clone https://github.com/nikoniko777satoshi-alt/canon-os.git canon-os && cd 
   [ボールト・ポリシー](kernel/vault-policy.md)
 - `behavior/` — [振る舞いスタイル](behavior/operating-style.md) + [サブエージェント前文](behavior/subagent-preamble.md)
 - `playbooks/` — unknown-unknown プロトコル、プロジェクト起動、キックオフ、プロジェクト監査、メンテナンスレビュー、
-  セッション運用
+  自己保守ループ、セッション運用
 - `checklists/` — [バリューゲート](checklists/value-gate.md)
-- `templates/` — プロジェクトエージェントファイル、実装ノート、進捗、引き継ぎ、憲章、決定、サブエージェント前文
-- `maintenance/` — 非推奨化ルール + レビューログ・決定・バックログ用のスターター
+- `templates/` — プロジェクトエージェントファイル、実装ノート、進捗、引き継ぎ、憲章、決定
+- `maintenance/` — [vault lint](maintenance/vault-lint.py)、非推奨化ルール + レビューログ・決定・バックログ用のスターター
 - `INDEX.md` — 玄関口。最初に読むもの
 
 ## 謝辞

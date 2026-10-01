@@ -13,6 +13,10 @@ anywhere — it doesn't modify your settings by default). Re-run with `--write` 
 append the `CLAUDE.md` pointer automatically (backed up first). The one line for `settings.json` is printed for
 you to add — JSON isn't auto-edited, to avoid clobbering your settings.
 
+The AGENTS.md adapter writes `AGENTS.md` into the **current directory**, so for `--target agents|both` run the
+installer from the project you want to wire up (e.g. `cd ~/my-project && ~/canon-os/install.sh --write`), not
+from inside the canon-os checkout.
+
 ```sh
 ./install.sh --target both --write     # apply to Claude Code + AGENTS.md tools
 ./install.sh --target claude           # print Claude Code changes only
