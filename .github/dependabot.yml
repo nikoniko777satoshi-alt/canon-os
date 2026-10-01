@@ -1,0 +1,12 @@
+# 依存の更新を週1回まとめて提案する。minor/patch は 1 本の PR にまとめ、major は個別 PR で出す。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Tokyo
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]
