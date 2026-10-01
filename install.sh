@@ -23,7 +23,12 @@ TARGET="both"
 DEST="${HOME}/.canon-os"
 WRITE=0
 
-need_arg() { [ $# -ge 2 ] && [ -n "$2" ] || { echo "option $1 needs a value" >&2; exit 2; }; }
+need_arg() {
+  if [ $# -lt 2 ] || [ -z "$2" ]; then
+    echo "option $1 needs a value" >&2
+    exit 2
+  fi
+}
 
 while [ $# -gt 0 ]; do
   case "$1" in
