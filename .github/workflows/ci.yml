@@ -12,18 +12,17 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Vault lint (no broken relative links)
-        run: |
-          out="$(python3 maintenance/vault-lint.py --root . --out-dir "$RUNNER_TEMP/lint")"
-          echo "$out"
-          cat "$RUNNER_TEMP"/lint/vault-lint-*.md
-          echo "$out" | grep -q 'broken_links=0 '
+        run: python3 maintenance/vault-lint.py --root . --out-dir "$RUNNER_TEMP/lint" --fail-on-broken
+
+      - name: Vault lint unit tests
+        run: python3 -m unittest discover tests -v
 
       - name: Kernel files stay under 100 lines (deprecation-rules.md anti-bloat)
         run: |
@@ -51,3 +50,14 @@ jobs:
           test -f "$HOME/.claude/output-styles/operating-style.md"
           grep -q '^## canon-os' "$HOME/.claude/CLAUDE.md"
           grep -q 'Agent entry point' "$proj/AGENTS.md"
+          # Re-running must not duplicate the pointers.
+          "$GITHUB_WORKSPACE/install.sh" --write
+          test "$(grep -c '^## canon-os$' "$HOME/.claude/CLAUDE.md")" -eq 1
+          test "$(grep -c '^# Agent entry point (canon-os)$' "$proj/AGENTS.md")" -eq 1
+          # The placed tree must be self-contained (no broken relative links).
+          python3 "$GITHUB_WORKSPACE/maintenance/vault-lint.py" --root "$HOME/.canon-os" \
+            --out-dir "$RUNNER_TEMP/lint-installed" --fail-on-broken
+          # Running inside the checkout must not touch the repo's own AGENTS.md.
+          cd "$GITHUB_WORKSPACE"
+          ./install.sh --target agents --write
+          git diff --exit-code AGENTS.md

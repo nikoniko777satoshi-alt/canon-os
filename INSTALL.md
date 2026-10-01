@@ -15,7 +15,8 @@ you to add — JSON isn't auto-edited, to avoid clobbering your settings.
 
 The AGENTS.md adapter writes `AGENTS.md` into the **current directory**, so for `--target agents|both` run the
 installer from the project you want to wire up (e.g. `cd ~/my-project && ~/canon-os/install.sh --write`), not
-from inside the canon-os checkout.
+from inside the canon-os checkout (the installer skips the AGENTS.md step there). Re-running `--write` is safe:
+a pointer that is already present is left unchanged.
 
 ```sh
 ./install.sh --target both --write     # apply to Claude Code + AGENTS.md tools

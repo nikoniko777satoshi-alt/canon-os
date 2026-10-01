@@ -11,21 +11,31 @@
 #   --dest    where to place the canon-os knowledge tree (default: $HOME/.canon-os)
 #   --write   install the style file and append the CLAUDE.md pointer (backed up first). The one line for
 #             settings.json is printed, not auto-edited (JSON isn't safely editable in POSIX sh). Without
-#             --write, all changes are printed only.
+#             --write, all changes are printed only. Re-running is safe: a pointer that is already present
+#             is not appended again.
+#
+#   The AGENTS.md adapter writes into the current directory — run it from the project you want to wire up.
 
 set -eu
 
-SRC="$(cd "$(dirname "$0")" && pwd)"
+SRC="$(cd "$(dirname "$0")" && pwd -P)"
 TARGET="both"
 DEST="${HOME}/.canon-os"
 WRITE=0
 
+need_arg() {
+  if [ $# -lt 2 ] || [ -z "$2" ]; then
+    echo "option $1 needs a value" >&2
+    exit 2
+  fi
+}
+
 while [ $# -gt 0 ]; do
   case "$1" in
-    --target) TARGET="$2"; shift 2 ;;
-    --dest)   DEST="$2"; shift 2 ;;
+    --target) need_arg "$@"; TARGET="$2"; shift 2 ;;
+    --dest)   need_arg "$@"; DEST="$2"; shift 2 ;;
     --write)  WRITE=1; shift ;;
-    -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,/^$/s/^# \{0,1\}//p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 2 ;;
   esac
 done
@@ -36,12 +46,17 @@ hr()  { printf '%s\n' "---------------------------------------------------------
 # 1. Place the knowledge tree (idempotent copy).
 say "canon-os: placing knowledge tree at ${DEST}"
 mkdir -p "${DEST}"
-for d in kernel behavior playbooks checklists templates maintenance; do
-  [ -d "${SRC}/${d}" ] && cp -R "${SRC}/${d}" "${DEST}/"
-done
-for f in INDEX.md MODELS.md README.md; do
-  [ -f "${SRC}/${f}" ] && cp "${SRC}/${f}" "${DEST}/"
-done
+if [ "$(cd "${DEST}" && pwd -P)" = "${SRC}" ]; then
+  say "  --dest is this checkout itself; nothing to copy."
+else
+  # Everything the tree's relative links point at is copied, so the placed tree has no broken links.
+  for d in kernel behavior playbooks checklists templates maintenance assets; do
+    [ -d "${SRC}/${d}" ] && cp -R "${SRC}/${d}" "${DEST}/"
+  done
+  for f in INDEX.md MODELS.md README.md README.ja.md INSTALL.md INSTALL_PROMPT.md AGENTS.md LICENSE; do
+    [ -f "${SRC}/${f}" ] && cp "${SRC}/${f}" "${DEST}/"
+  done
+fi
 say "  done."
 
 install_claude() {
@@ -59,9 +74,13 @@ The kernel (\`${DEST}/kernel/\`) is authoritative. Read the index, then only the
     cp "${STYLE_SRC}" "${STYLE_DIR}/operating-style.md"
     say "  installed output style -> ${STYLE_DIR}/operating-style.md"
     CLAUDE_MD="${HOME}/.claude/CLAUDE.md"
-    [ -f "${CLAUDE_MD}" ] && cp "${CLAUDE_MD}" "${CLAUDE_MD}.bak.$(date +%Y%m%d%H%M%S)"
-    printf '\n%s\n' "${POINTER}" >> "${CLAUDE_MD}"
-    say "  appended canon-os pointer -> ${CLAUDE_MD} (backup kept if it existed)"
+    if [ -f "${CLAUDE_MD}" ] && grep -q '^## canon-os$' "${CLAUDE_MD}"; then
+      say "  canon-os pointer already present in ${CLAUDE_MD} — left unchanged"
+    else
+      [ -f "${CLAUDE_MD}" ] && cp "${CLAUDE_MD}" "${CLAUDE_MD}.bak.$(date +%Y%m%d%H%M%S)"
+      printf '\n%s\n' "${POINTER}" >> "${CLAUDE_MD}"
+      say "  appended canon-os pointer -> ${CLAUDE_MD} (backup kept if it existed)"
+    fi
     say "  ACTION NEEDED: set \"outputStyle\": \"operating-style\" in ${SETTINGS}"
     say "                 (JSON is not auto-edited, to avoid clobbering your settings)"
   else
@@ -85,7 +104,18 @@ Read \`${DEST}/INDEX.md\` first. The kernel (\`${DEST}/kernel/\`) is authoritati
 Read the index, then only the notes a task needs — don't sweep the whole tree.
 When delegating to a sub-task, prepend \`${DEST}/behavior/subagent-preamble.md\`."
 
+  if [ "$(pwd -P)" = "${SRC}" ]; then
+    say "  skipped: the current directory is the canon-os checkout itself."
+    say "  Run the installer from the project you want to wire up, e.g.:"
+    say "      cd ~/my-project && ${SRC}/install.sh --target agents --write"
+    return 0
+  fi
+
   if [ "${WRITE}" = "1" ]; then
+    if [ -f "${AGENTS_FILE}" ] && grep -q '^# Agent entry point (canon-os)$' "${AGENTS_FILE}"; then
+      say "  canon-os entry point already present in ${AGENTS_FILE} — left unchanged"
+      return 0
+    fi
     if [ -f "${AGENTS_FILE}" ]; then
       cp "${AGENTS_FILE}" "${AGENTS_FILE}.bak.$(date +%Y%m%d%H%M%S)"
       say "  existing AGENTS.md backed up."

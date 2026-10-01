@@ -1,2 +1,5 @@
 # Reports written by maintenance/vault-lint.py (default --out-dir is <root>/maintenance)
 maintenance/vault-lint-*.md
+
+# Python bytecode
+__pycache__/
